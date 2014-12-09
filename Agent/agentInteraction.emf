@@ -9,16 +9,17 @@ class Agent {
 	attr String agentName;
 	val AgentAttributeValue [*] agentValue;
 	val AgentInteraction [*] agentInteraction;
+	val AgentState [*] agentState;
 }
 
 class Environment {
-	ref AgentInteraction [*] #isInvolvedIn involves;
+	//ref AgentInteraction [*] #isInvolvedIn involves;
 }
 
 class AgentAttributeValue {
 	attr String value;
 	ref AgentState [1..*] defines;
-	ref AgentInteraction [*] #references isReferencedBy;
+	//ref AgentInteraction [*] #references isReferencedBy;
 }
 
 class AgentState {   
@@ -27,6 +28,6 @@ class AgentState {
 }
 
 class AgentInteraction {
-	ref Environment [*] #involves isInvolvedIn;
-	ref AgentAttributeValue [*] #isReferencedBy references;  // references and can change...
+	ref Environment [*] isInvolvedIn;
+	ref AgentAttributeValue [*] references;  // references and can change...
 }
