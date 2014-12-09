@@ -1,0 +1,48 @@
+// atempting git save
+
+@namespace(
+	uri="agent1",
+	prefix="agent1")
+package agent1;
+
+// DIAGRAM
+class AgentMM  {
+	val Agent [*] agents;
+	val AgentType [*] agentType;
+}
+
+// Agent level
+	
+class Agent {
+	attr String agentName;
+	val AgentAttributeValue [*] agentValue;
+}
+
+class AgentAttributeValue {
+	attr String value;
+	ref AgentState [1..*] defines;
+	// ref AgentState [1..*]  setDefault;
+	ref AgentAttribute [*] #value attribute;
+}
+
+class AgentState {   
+	attr String [0..1] stateName;
+	// ref AgentAttributeValue [*]  definedBy; // an agentState is defined by the values of the agentAttributes. 
+	ref  AgentAttributeValue [*] setDefault; // An agentState can also set default agentAttribute values.
+}
+
+// Type level
+
+class AgentType {
+	attr String agentTypeName;
+	val AgentAttribute [*] agentAttribute;
+	val AgentState [*] typeStates;
+}
+
+class AgentAttribute {
+	attr String agentAttributeName;
+	ref AgentAttributeValue [*] #attribute value; //link to agent level
+	
+}
+
+

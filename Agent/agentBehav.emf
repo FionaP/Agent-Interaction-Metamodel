@@ -1,0 +1,62 @@
+@namespace(
+	uri="agent1",
+	prefix="agent1")
+package agent1;
+
+// DIAGRAM
+class AgentMM  {
+	val Agent [*] agents;
+	val AgentType [*] agentType;
+}
+
+// Agent level
+
+class Agent {
+	attr String agentName;
+	val AgentAttributeValue [*] agentValue;
+}
+
+
+class AgentAttributeValue {
+	ref StateChangeTrigger [*] #evaluates isEvaluatedBy;
+}
+
+class AgentState {   
+	ref  TransitionTrigger [*] #triggers isTrigger;
+	ref StateTransition [*] #hasStartState isStartState;
+	ref StateTransition [*] #hasEndState isEndState;
+}
+
+class StateTransition {
+	attr String [0..1] stateName;
+	val StateChangeTrigger [*] triggerStateChange;
+	ref AgentState [*] #isStartState hasStartState;
+	ref AgentState [*] #isEndState hasEndState;
+}
+
+class StateChangeTrigger {
+	ref AgentAttributeValue [*] #isEvaluatedBy evaluates ;
+}
+
+class TransitionTrigger {
+	ref AgentState [*] #isTrigger triggers;
+}
+// Type level
+
+class AgentType {
+	ref TypeTransition [*] #hasSource isSource;
+	ref TypeTransition [*] #hasTarget isTarget;
+	
+}
+
+class TypeTransition {
+	attr String [0..1] transitionName;
+	val TransitionTrigger [*] trigger;
+	ref AgentType [*] #isSource hasSource;
+	ref AgentType [*] #isTarget hasTarget;
+	ref StateTransition [*] calls;
+}
+
+
+
+

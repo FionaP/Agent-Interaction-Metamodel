@@ -1,0 +1,32 @@
+@namespace(
+	uri="agentInteraction",
+	prefix="agentInteraction")
+package agentInteraction;
+
+// Agent level
+	
+class Agent {
+	attr String agentName;
+	val AgentAttributeValue [*] agentValue;
+	val AgentInteraction [*] agentInteraction;
+}
+
+class Environment {
+	ref AgentInteraction [*] #isInvolvedIn involves;
+}
+
+class AgentAttributeValue {
+	attr String value;
+	ref AgentState [1..*] defines;
+	ref AgentInteraction [*] #references isReferencedBy;
+}
+
+class AgentState {   
+	attr String [0..1] stateName;
+	ref  AgentAttributeValue [*] setDefault; // An agentState can also set default agentAttribute values.
+}
+
+class AgentInteraction {
+	ref Environment [*] #involves isInvolvedIn;
+	ref AgentAttributeValue [*] #isReferencedBy references;  // references and can change...
+}
