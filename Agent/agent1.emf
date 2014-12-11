@@ -23,8 +23,7 @@ abstract class Transient {
 
 class Transition {
 	attr String [0..1] transitionName; // a transition may be named
-	// a transition has a condition that has to evaluate to true for it to fire
-	attr Boolean condition;	
+	val Trigger [*] triggers;
 	// a transition references Transients as source and target
 	// the transition changes the state and, optionally, type of an agent
 	ref Transient [*] #isSource source;
@@ -36,13 +35,20 @@ class Transition {
 class Agent {  //named agents, contain attribute values
 	attr String agentName;
 	val AgentAttributeValue [*] agentValue;
+	val AgentState [*] currentState;
 }
 
 class AgentAttributeValue { //agent attributes with values
 	attr String value;
+	
+
 	// ref AgentState [1..*] isDefinedBy;  // An attribute value is a passive thing referenced by other concepts
 	// ref AgentState [1..*]  setDefault;
 	// ref AgentAttribute [*] #value attribute;
+}
+
+class Trigger {
+	val AgentAttributeValue [*] necessaryConditions;	
 }
 
 class AgentState extends Transient {   // agent state is defined over the attribute values

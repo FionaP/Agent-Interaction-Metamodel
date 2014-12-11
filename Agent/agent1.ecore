@@ -17,6 +17,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Transition">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="transitionName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="triggers" upperBound="-1"
+        eType="#//Trigger" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="source" upperBound="-1"
         eType="#//Transient" eOpposite="#//Transient/isSource"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="target" upperBound="-1"
@@ -26,9 +28,15 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="agentName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="agentValue" upperBound="-1"
         eType="#//AgentAttributeValue" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="currentState" upperBound="-1"
+        eType="#//AgentState" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AgentAttributeValue">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Trigger">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="necessaryConditions" upperBound="-1"
+        eType="#//AgentAttributeValue" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AgentState" eSuperTypes="#//Transient">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="stateName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
