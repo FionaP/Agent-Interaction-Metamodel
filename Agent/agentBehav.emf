@@ -4,20 +4,43 @@
 package agent1;
 
 // DIAGRAM
-class AgentMM  {
-	val Agent [*] agents;
-	val AgentType [*] agentType;
+
+
+class AgentMM  {  // an AgentMM contains Agents and AgentTypes
+	val Agent [*] agents; 
+	val AgentType [*] agentType; 
+	// probably also needs to contain attribute type 
+}
+
+// Type level
+
+class AgentType {  // an agentType contains a set of attributes
+	val AgentAttribute [*] agentAttribute;
+
+	ref TypeTransition [*] #hasSource isSource; // an agentType is can be the source ...
+	ref TypeTransition [*] #hasTarget isTarget; //... or target of a type transition
+	
+}
+
+class AgentAttribute { // an AgentAttribute has a name and contains a set of AgentAttributeValues
+	attr String attributeName;
+	val AgentAttributeValue [*] attributeValue;  // although an agentAttribute should have a value, 1..* would require that we have a null value
 }
 
 // Agent level
 
-class Agent {
+class Agent { // an Agent has a name and references a type.
+//an agent has a possibly-empty set of attribute values, associated with each of the type's attributes
 	attr String agentName;
-	val AgentAttributeValue [*] agentValue;
+	ref AgentAttributeValue [*] agentAttributeValue; // one way: do not need to link value to agent
+	ref AgentType [1] type; 
 }
 
 
-class AgentAttributeValue {
+class AgentAttributeValue { //an Agent Attribute Values can be accessed from an agent and
+							// from an attribute of the type of that attribute
+							// NEED a constraint to ensure that the value is a valid value of the attribute
+                         
 	ref StateChangeTrigger [*] #evaluates isEvaluatedBy;
 }
 
@@ -43,11 +66,7 @@ class TransitionTrigger {
 }
 // Type level
 
-class AgentType {
-	ref TypeTransition [*] #hasSource isSource;
-	ref TypeTransition [*] #hasTarget isTarget;
-	
-}
+
 
 class TypeTransition {
 	attr String [0..1] transitionName;
