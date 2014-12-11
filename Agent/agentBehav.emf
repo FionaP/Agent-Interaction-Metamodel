@@ -39,13 +39,14 @@ class Agent { // an Agent has a name and references a type.
 
 class AgentAttributeValue { //an Agent Attribute Values can be accessed from an agent and
 							// from an attribute of the type of that attribute
+							// NEED a way to record a value
 							// NEED a constraint to ensure that the value is a valid value of the attribute
                          
 	ref StateChangeTrigger [*] #evaluates isEvaluatedBy;
 }
 
 class AgentState {   
-	ref  TransitionTrigger [*] #triggers isTrigger;
+	ref  TypeTransitionTrigger [*] #triggers isTrigger;
 	ref StateTransition [*] #hasStartState isStartState;
 	ref StateTransition [*] #hasEndState isEndState;
 }
@@ -61,7 +62,7 @@ class StateChangeTrigger {
 	ref AgentAttributeValue [*] #isEvaluatedBy evaluates ;
 }
 
-class TransitionTrigger {
+class TypeTransitionTrigger {
 	ref AgentState [*] #isTrigger triggers;
 }
 // Type level
@@ -70,7 +71,7 @@ class TransitionTrigger {
 
 class TypeTransition {
 	attr String [0..1] transitionName;
-	val TransitionTrigger [*] trigger;
+	val TypeTransitionTrigger [*] trigger;
 	ref AgentType [*] #isSource hasSource;
 	ref AgentType [*] #isTarget hasTarget;
 	ref StateTransition [*] calls;

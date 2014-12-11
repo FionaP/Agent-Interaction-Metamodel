@@ -1,5 +1,6 @@
-// atempting git save
-// attempting to update in git
+// this metamodel is based on discussion with Louis, 9-7-14: see latest version of paper (pre Dec 2014)
+//  Add transitions
+// Added generalisation of type and state of agent: here these are both things that change
 
 @namespace(
 	uri="agent1",
@@ -7,42 +8,61 @@
 package agent1;
 
 // DIAGRAM
-class AgentMM  {
+
+class AgentMM  {   //root of agent metamodel
+					// contains agents and agent types (also transitions)
 	val Agent [*] agents;
-	val AgentType [*] agentType;
+	val Transient [*] changeableThings;
+	val Transition [*] transitions;
+}
+
+abstract class Transient {
+	ref Transition[*] #source isSource;
+	ref Transition [*] #target isTarget;
+}
+
+class Transition {
+	attr String [0..1] transitionName; // a transition may be named
+	// a transition has a condition that has to evaluate to true for it to fire
+	attr Boolean condition;	
+	// a transition references Transients as source and target
+	// the transition changes the state and, optionally, type of an agent
+	ref Transient [*] #isSource source;
+	ref Transient [*] #isTarget target;
 }
 
 // Agent level
 	
-class Agent {
+class Agent {  //named agents, contain attribute values
 	attr String agentName;
 	val AgentAttributeValue [*] agentValue;
 }
 
-class AgentAttributeValue {
+class AgentAttributeValue { //agent attributes with values
 	attr String value;
-	ref AgentState [1..*] defines;
+	// ref AgentState [1..*] isDefinedBy;  // An attribute value is a passive thing referenced by other concepts
 	// ref AgentState [1..*]  setDefault;
-	ref AgentAttribute [*] #value attribute;
+	// ref AgentAttribute [*] #value attribute;
 }
 
-class AgentState {   
-	attr String [0..1] stateName;
+class AgentState extends Transient {   // agent state is defined over the attribute values
+					
+	attr String [0..1] stateName;  // a state has an optional name
+	ref  AgentAttributeValue [*] setDefault; // the state sets default values for the attributes
 	// ref AgentAttributeValue [*]  definedBy; // an agentState is defined by the values of the agentAttributes. 
-	ref  AgentAttributeValue [*] setDefault; // An agentState can also set default agentAttribute values.
 }
 
 // Type level
 
-class AgentType {
-	attr String agentTypeName;
-	val AgentAttribute [*] agentAttribute;
-	val AgentState [*] typeStates;
+class AgentType extends Transient {  //an agent type has a name and determines the attributes and states for its agents
+	attr String agentTypeName;  
+	val AgentAttribute [*] agentAttribute;  //the type of agent determines attributes
+	val AgentState [*] typeStates; // the agent type determines which agent states are identified
 }
 
-class AgentAttribute {
+class AgentAttribute {  // agent attribute is named and has a current value (which can be changed)
 	attr String agentAttributeName;
-	ref AgentAttributeValue [*] #attribute value; //link to agent level
+	ref AgentAttributeValue [*] currentValue; //link to agent level
 	
 }
 

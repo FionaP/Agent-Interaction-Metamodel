@@ -4,8 +4,23 @@
   <eClassifiers xsi:type="ecore:EClass" name="AgentMM">
     <eStructuralFeatures xsi:type="ecore:EReference" name="agents" upperBound="-1"
         eType="#//Agent" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="agentType" upperBound="-1"
-        eType="#//AgentType" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="changeableThings" upperBound="-1"
+        eType="#//Transient" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transitions" upperBound="-1"
+        eType="#//Transition" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Transient" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="isSource" upperBound="-1"
+        eType="#//Transition" eOpposite="#//Transition/source"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="isTarget" upperBound="-1"
+        eType="#//Transition" eOpposite="#//Transition/target"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Transition">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="transitionName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" upperBound="-1"
+        eType="#//Transient" eOpposite="#//Transient/isSource"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" upperBound="-1"
+        eType="#//Transient" eOpposite="#//Transient/isTarget"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Agent">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="agentName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -14,17 +29,13 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AgentAttributeValue">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="defines" lowerBound="1"
-        upperBound="-1" eType="#//AgentState"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" upperBound="-1"
-        eType="#//AgentAttribute" eOpposite="#//AgentAttribute/value"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AgentState">
+  <eClassifiers xsi:type="ecore:EClass" name="AgentState" eSuperTypes="#//Transient">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="stateName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="setDefault" upperBound="-1"
         eType="#//AgentAttributeValue"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AgentType">
+  <eClassifiers xsi:type="ecore:EClass" name="AgentType" eSuperTypes="#//Transient">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="agentTypeName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="agentAttribute" upperBound="-1"
         eType="#//AgentAttribute" containment="true"/>
@@ -33,7 +44,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AgentAttribute">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="agentAttributeName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="value" upperBound="-1"
-        eType="#//AgentAttributeValue" eOpposite="#//AgentAttributeValue/attribute"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="currentValue" upperBound="-1"
+        eType="#//AgentAttributeValue"/>
   </eClassifiers>
 </ecore:EPackage>
